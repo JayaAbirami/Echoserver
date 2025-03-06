@@ -20,8 +20,55 @@ Implementation using Python code
 Testing the server and client 
 
 ## PROGRAM:
+```
+# echo-server.py
 
+
+import socket
+
+
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    conn, addr = s.accept()
+    with conn:
+        print(f"Connected by {addr}")
+        while True:
+            data = conn.recv(1024)
+            if not data:
+                break
+            conn.sendall(data)
+
+```
+```
+# echo-client.py
+
+
+import socket
+
+
+HOST = "127.0.0.1"  # The server's hostname or IP address
+PORT = 65432  # The port used by the server
+
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.sendall(b"Hello, world")
+    data = s.recv(1024)
+
+
+print(f"Received {data!r}")
+
+```
 ## OUTPUT:
+![Screenshot 2025-03-06 114205](https://github.com/user-attachments/assets/028b339e-d503-4a24-a600-4f0169aeac7d)
+![Screenshot 2025-03-06 114232](https://github.com/user-attachments/assets/1288e522-9f72-4dbe-b125-b02fe050623b)
+![Screenshot 2025-03-06 114300](https://github.com/user-attachments/assets/92cd0d2a-9a43-49df-8714-9e39079ca1b3)
+
 
 ## RESULT:
 The program is executed successfully
